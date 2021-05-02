@@ -38,4 +38,38 @@ docker ps
 # first number is the public port (http://localhost:3000)
 # second number is the docker container internal port
 docker run -p 3000:3000 -d --name node-app node-app-image
+
+# login to "node-app" container using "bash" editor
+# "-it" means the interactive mode
+docker exec -it node-app bash
+
+# see the cuurent directory inside of our container
+# we'll be at "/app"
+pwd
+
+# list files/folders that we have inside of our container
+# we'll see that we have "node_modules" and "Dockerfile"
+# which are not usually needed
+ls
+
+# exit from logged-in container
+exit
+
+# let's at first kill our container
+docker rm node-app -f
+
+# create ".dockerignore" file with some content
+# there we'll specify the files
+# which are not be copied into container
+
+# again let's build the image
+docker build -t node-app-image .
+
+# again run our container from just created image
+docker run -p 3000:3000 -d --name node-app node-app-image
+
+# now if we'll login into our container
+# we'll not see any files/folders ignored by ".deockerignore"
+# we'll only see "node_modules" folder,
+# but it created by "npm i" command from "Dockerfile"
 ```
