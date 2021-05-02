@@ -26,4 +26,16 @@ docker run -d --name node-app node-app-image
 
 # see running containers
 docker ps
+
+# remove our running "node-app" container
+# "-f" means that it will stop the running container before deleting that
+docker rm node-app -f
+
+# make sure that we've deleted the container
+docker ps
+
+# port-binding.
+# first number is the public port (http://localhost:3000)
+# second number is the docker container internal port
+docker run -p 3000:3000 -d --name node-app node-app-image
 ```
