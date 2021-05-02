@@ -72,4 +72,19 @@ docker run -p 3000:3000 -d --name node-app node-app-image
 # we'll not see any files/folders ignored by ".deockerignore"
 # we'll only see "node_modules" folder,
 # but it created by "npm i" command from "Dockerfile"
+
+# in this step when we'll change something in our app,
+# (for example in "index.js"), it will not affect on container files
+# which we've already run.
+
+# at first let's remove our running container
+# and let's rebuild the image and run container again
+docker rm node-app -f
+docker build -t node-app-image .
+docker run -p 3000:3000 -d --name node-app node-app-image
+
+# so in this step we need to
+# remove the image, rebuild that image again and run the container.
+# but this cycle is not comfortable
+# so we'll do that process with some way
 ```
