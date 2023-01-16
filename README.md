@@ -5,86 +5,115 @@
 
 - Docker installed.
 
-### Build:
 
+
+### Resources:
+
+- [Classsed: Docker Tutorial (+ Node & Postgres setup)](https://www.youtube.com/watch?v=Dm0CmZz-QyI)
+- [Complete Source Code](https://github.com/hidjou/classsed-docker-tutorial/tree/done)
+
+
+
+### Commands:
+
+- Install Docker on Linux:
+```bash
+suco apt update
+sudo apt install docker.io
+# restart the machine
+sudo apt update
+sudo apt install docker-compose
 ```
-# build our docker image ("." is the context)
-docker build .
 
-# see running docker images
-docker image ls
+- Building a docker image from the Dockerfile:
+```bash
+# by default it will be find the file named "Dockerfile"
+docker build . --tag node-server-container
+# if there is no Dockerfile in the current directory, you can specify the path to the Dockerfile like this:
+docker build ./path/to/Dockerfile --tag node-server-container
+```
 
-# delete unused (images with <none> respository name) images like
-docker image rm d8ba540fe733
+- See docker images:
+```bash
+docker images -a
+docker image ls -a
+```
 
-# create docker image with specifying the image name as "node-app-image"
-docker build -t node-app-image .
+- Delete images:
+```bash
+docker image rm <IMAGE_ID>
+docker rmi <IMAGE_ID>
+```
 
-# run docker container with name "node-app" by image name from our created image
+- Create/Build an image with specifying the image name (tag):
+```bash
+docker build . -t node-server
+```
+
+- Run a container with name "node-server-container" by the image name:
+```bash
+docker run -d --name node-server-container node-server-image
 # "-d" means that we'll detach after running the command
-docker run -d --name node-app node-app-image
+# by default it will read the "node-server-image" from the local machine
+# but if it will not find it, it will try to find it in the dockerHub remote repository
+```
 
-# see running containers
-docker ps
+- See containers:
+```bash
+docker ps -a
+docker container ls -a
+```
 
-# remove our running "node-app" container
-# "-f" means that it will stop the running container before deleting that
-docker rm node-app -f
+- Delete container:
+```bash
+# stop and delete the container
+docker stop <CONTAINER_ID>
+docker rm <CONTAINER_ID>
+# delete force:
+docker rm <CONTAINER_ID> -f
+```
 
-# make sure that we've deleted the container
-docker ps
+- Create ".dockerignore" for ignoring files and folders when building the docker image
 
-# port-binding.
-# first number is the public port (http://localhost:3000)
+- Run our container from created image:
+```bash
+# first number is the public port (http://localhost:5001)
 # second number is the docker container internal port
-docker run -p 3000:3000 -d --name node-app node-app-image
+docker run -p 5001:5000 -d --name node-server-container node-server-image
+```
 
-# login to "node-app" container using "bash" editor
+- Login to "node-server-container" container using "bash" editor
+```bash
 # "-it" means the interactive mode
-docker exec -it node-app bash
+docker exec -it node-server-container bash
+# "exit" to exit from the container
 
-# see the cuurent directory inside of our container
-# we'll be at "/app"
-pwd
+# or run a command inside the container
+docker exec -it node-server-container <COMMAND>
+# example:
+docker exec -it node-server-container npm run migrate
+```
 
-# list files/folders that we have inside of our container
-# we'll see that we have "node_modules" and "Dockerfile"
-# which are not usually needed
-ls
+- In this step when we'll change something in our app, (for example in "index.js"),
+  it will not affect on container files which we've already run.
 
-# exit from logged-in container
-exit
+- Create docker-compose.yml with setting the environment variables and volumes:
+```bash
+# start the compose services
+docker-compose up -d --build
 
-# let's at first kill our container
-docker rm node-app -f
+# execute a command inside the container
+docker exec <CONTAINER_ID> npm run migrate
+docker exec <CONTAINER_ID> npm run seed
 
-# create ".dockerignore" file with some content
-# there we'll specify the files
-# which are not be copied into container
+# connect to the database (if it's publicly available for external connections)
+psql -d docker -p 4321 -U postgres
 
-# again let's build the image
-docker build -t node-app-image .
+# stop the compose services
+docker-compose down
+```
 
-# again run our container from just created image
-docker run -p 3000:3000 -d --name node-app node-app-image
-
-# now if we'll login into our container
-# we'll not see any files/folders ignored by ".deockerignore"
-# we'll only see "node_modules" folder,
-# but it created by "npm i" command from "Dockerfile"
-
-# in this step when we'll change something in our app,
-# (for example in "index.js"), it will not affect on container files
-# which we've already run.
-
-# at first let's remove our running container
-# and let's rebuild the image and run container again
-docker rm node-app -f
-docker build -t node-app-image .
-docker run -p 3000:3000 -d --name node-app node-app-image
-
-# so in this step we need to
-# remove the image, rebuild that image again and run the container.
-# but this cycle is not comfortable
-# so we'll do that process with some way
+- See volumes:
+```bash
+docker volume ls -a
 ```

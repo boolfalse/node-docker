@@ -1,25 +1,21 @@
 
 # use base "node" image from Node.js team
-FROM node:15
+FROM node:16
 
-# container's working directory
-# the relative path will start from here.
-# so any time we run the command
-# we'll not specify "app" directory
+# the relative path will start from this container's working directory.
+# so any time we run the command, we'll not specify "app" directory
 WORKDIR /app
 
-# copy the "package.json" to the "app" directory
-# technically we can write "COPY package.json /app" as well
-COPY package.json .
+# copy everything from the current directory to the container's working directory ("app" directory)
+COPY . .
 
 # build time: install our dependencies
-RUN npm i
+RUN npm install
+#RUN npm migrate
+#RUN npm seed
 
-# copy all our app source files to the container
-COPY . ./
-
-# our app will listen to 3000 port
-EXPOSE 3000
+# our app will listen to 5000 port
+EXPOSE 5000
 
 # runtime: when we deploy our container, it will run "node index.js"
 CMD ["node", "index.js"]
