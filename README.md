@@ -14,6 +14,12 @@
 
 
 
+### TODOs:
+
+- [ ] Setup Postgres container with another user and password.
+
+
+
 ### Commands:
 
 - Install Docker on Linux:
@@ -106,8 +112,15 @@ docker-compose up -d --build
 docker exec <CONTAINER_ID> npm run migrate
 docker exec <CONTAINER_ID> npm run seed
 
-# connect to the database (if it's publicly available for external connections)
-psql -d docker -p 4321 -U postgres
+# test via connecting to the Postgres database
+# (if it's publicly available for external connections)
+psql -h localhost -p 4321 -U postgres
+\c postgres
+\dt
+SELECT * FROM users;
+\q
+# or test via server
+curl http://localhost:5001/users
 
 # stop the compose services
 docker-compose down
