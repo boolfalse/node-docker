@@ -1,34 +1,39 @@
 
-## Node.js with Docker
+## Node.js with Docker project sample
+
 
 ### Prerequisites:
 
-- Docker installed.
+- Node.js
+- Docker
+- Docker-compose
 
 
+### Basic info:
 
-### Resources:
-
-- [Classsed: Docker Tutorial (+ Node & Postgres setup)](https://www.youtube.com/watch?v=Dm0CmZz-QyI)
-- [Complete Source Code](https://github.com/hidjou/classsed-docker-tutorial/tree/done)
-
-
-
-### TODOs:
-
-- [ ] Setup Postgres container with another user and password.
-
+- Containers are isolated from each other and bundle their own application, tools, libraries and configuration files; they can communicate with each other through well-defined channels.
+- The difference between a container and a virtual machine is that containers are not based on a hardware virtualization, but on OS-level virtualization.
+- The advantage of containers is that they are lightweight and portable.
 
 
 ### Commands:
 
 - Install Docker on Linux:
 ```bash
-suco apt update
+sudo apt update
 sudo apt install docker.io
 # restart the machine
 sudo apt update
 sudo apt install docker-compose
+```
+
+- Pull an image from dockerHub:
+```bash
+docker pull <IMAGE_NAME>:<TAG>
+# example postgres latest version:
+docker pull postgres:latest
+# example node.js version 14:
+docker pull node:14
 ```
 
 - Building a docker image from the Dockerfile:
@@ -130,3 +135,25 @@ docker-compose down
 ```bash
 docker volume ls -a
 ```
+
+### Resources:
+
+- [Classsed: Docker Tutorial (+ Node & Postgres setup)](https://www.youtube.com/watch?v=Dm0CmZz-QyI)
+- [Complete Source Code](https://github.com/hidjou/classsed-docker-tutorial/tree/done)
+
+- [Can’t delete docker image with dependent child images](https://stackoverflow.com/questions/38118791/can-t-delete-docker-image-with-dependent-child-images/43463968#43463968)
+- [Postgres, Docker & Node.js - Password authentication failed (Connection refused or psql: FATAL: role "root" does not exist)](https://stackoverflow.com/questions/43532280/postgres-docker-node-js-password-authentication-failed-connection-refused)
+- [psql: FATAL: password authentication failed for user "postgres"](https://github.com/sameersbn/docker-postgresql/issues/112)
+- [Postgres, Docker & Node.js - Password authentication failed (Connection refused or psql: FATAL: role "root" does not exist)](https://stackoverflow.com/questions/43532280/postgres-docker-node-js-password-authentication-failed-connection-refused?noredirect=1&lq=1)
+- [How to fix an error: password authentication failed for the user in PostgreSQL](https://hassanannajjar.medium.com/how-to-fix-error-password-authentication-failed-for-the-user-in-postgresql-896e1fd880dc)
+- [postgres on dockerhub](https://hub.docker.com/_/postgres)
+
+
+### TODOs:
+
+- Setup Postgres container with another user and password.
+
+
+### Author:
+
+- [BoolFalse](https://boolfalse.com/)
